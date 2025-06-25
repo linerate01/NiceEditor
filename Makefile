@@ -8,6 +8,3 @@ all: $(TARGET)
 
 $(TARGET): editor.c
         $(CC) $(CFLAGS) -o $(TARGET) editor.c $(LDFLAGS)
-
-clean:
-        rm -f $(TARGET)                       
