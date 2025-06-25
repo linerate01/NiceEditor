@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -g
-LDFLAGS = -lncurses -lpthread
+LDFLAGS = -lncurses
 
 TARGET = editor
 
