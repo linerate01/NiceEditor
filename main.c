@@ -168,7 +168,7 @@ void move_line() {
     int height = 5;
     int start_y = (LINES - height) / 2;
     int start_x = (COLS - width) / 2;
-	// 창 만들어서 띄우기
+   // 창 만들어서 띄우기
     WINDOW* input_win = newwin(height, width, start_y, start_x);
     box(input_win, 0, 0);
     mvwprintw(input_win, 1, 2, "Move to :");
@@ -255,9 +255,10 @@ void* saveFileThread(void *arg) {
     pthread_mutex_lock(&mutex);
     const char* filename = current_filename;
     FILE* fp = fopen(filename, "w"); 
-	// 덮어쓰기함. 기존 사용자가 어느 부분을 수정했을지 알 수 없음
+   // 덮어쓰기함. 기존 사용자가 어느 부분을 수정했을지 알 수 없음
     if (!fp) {
         draw_status("Failed to save file.");
+        pthread_mutex_unlock(&mutex);
         return NULL;
     }
     for (int i = 0; i < MAX_ROWS; i++) {
@@ -266,6 +267,7 @@ void* saveFileThread(void *arg) {
     fclose(fp);
     draw_status("Autosaved.");
     pthread_mutex_unlock(&mutex);
+    return NULL;
 }
 
 int get_user_input(const char* prompt, char* out) {
@@ -388,6 +390,7 @@ int magenta(const char* word) {
 
 void show_logo() {
     int unused_rows, cols;
+    (void)unused_rows;
     getmaxyx(stdscr, unused_rows, cols);
 
     const char* logo[] = {
@@ -1209,12 +1212,12 @@ int main() {
             show_help_guide_popup();
             continue;
         }
-	// ctrl + F
+   // ctrl + F
         if (ch == 6) { 
             search();
             continue;
         }
-	// ctrl + E
+   // ctrl + E
         if(ch == 5) { 
             move_line();
             continue;
